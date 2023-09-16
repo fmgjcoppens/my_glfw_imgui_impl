@@ -7,8 +7,26 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui.h>
 
+#include <chrono>
+
 namespace MyApp
 {
+    class Timer
+    {
+        private:
+            std::chrono::time_point<std::chrono::high_resolution_clock> m_StartTimepoint;
+            std::chrono::time_point<std::chrono::high_resolution_clock> m_EndTimepoint;
+
+        public:
+            Timer();
+            ~Timer();
+
+        public:
+            void Stop();
+    };
+
+    
+
     class UseGLFW
     {
         private:
