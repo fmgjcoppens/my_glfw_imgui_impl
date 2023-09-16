@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 
-make clean && CXXFLAGS="-I../HazelPVR/include/vendor/glfw/include -L../HazelPVR/_build/include/vendor/glfw/src -lglfw3" make -j
+cmake -S . -B build
+cd build
+make -j
+cd ..
+ln -svf build/MyApp .
 
