@@ -20,7 +20,7 @@ namespace MyApp
         auto end   = std::chrono::time_point_cast<std::chrono::microseconds>(m_EndTimepoint).time_since_epoch().count();
         auto duration  = end - start;
         double miliseconds = duration * 0.001;
-        std::cout << "Duration: " << duration << " μs (" << miliseconds << " ms)\n";
+        std::cout << "Game loop duration: " << duration << " μs (" << miliseconds << " ms)\n";
     }
 
 
