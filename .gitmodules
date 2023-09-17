@@ -1,6 +1,6 @@
 [submodule "glfw"]
-	path = glfw
+	path = vendor/glfw
 	url = git@github.com:fmgjcoppens/glfw.git
 [submodule "imgui"]
-	path = imgui
+	path = vendor/imgui
 	url = git@github.com:fmgjcoppens/imgui.git
