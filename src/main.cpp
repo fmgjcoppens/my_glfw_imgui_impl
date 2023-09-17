@@ -4,24 +4,22 @@ ImVec4 bg_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 int main()
 {
+    auto myapp = MyApp::Init("Hazel Physics VR Engine", 1720, 720, true);
+
+    while (!myapp->ShouldClose())
     {
-        MyApp::Timer timer;
-        MyApp::UseImGui* myimgui = new MyApp::UseImGui("Hazel Physics VR Engine", 1720, 720, true);
+        myapp->BeginLoop();
 
-        while (!myimgui->ShouldClose())
-        {
-            myimgui->BeginLoop();
+        myapp->NewFrame();
 
-            myimgui->NewFrame();
+        myapp->Update();
 
-            myimgui->Update();
+        myapp->Render(bg_color);
 
-            myimgui->Render(bg_color);
-
-            myimgui->EndLoop();
-        }
-        delete myimgui;
+        myapp->EndLoop();
     }
+
+    delete myapp;
 
     return 0;
 }

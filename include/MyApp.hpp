@@ -25,8 +25,6 @@ namespace MyApp
             void Stop();
     };
 
-    
-
     class UseGLFW
     {
         private:
@@ -52,8 +50,6 @@ namespace MyApp
             void Init();
     };
 
-
-
     class UseImGui : public UseGLFW
     {
         private:
@@ -74,8 +70,7 @@ namespace MyApp
             void Init();
     };
 
-
-
+    UseImGui* Init(const char* title, int width, int height, bool vsync);
     void glfw_error_callback(int error, const char* description);
     void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 }

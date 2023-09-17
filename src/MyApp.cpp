@@ -23,8 +23,6 @@ namespace MyApp
         std::cout << "Game loop duration: " << duration << " μs (" << miliseconds << " ms)\n";
     }
 
-
-
     UseGLFW::UseGLFW(const char* title, int width, int height, bool vsync)
     {
         std::cerr << "UseGLFW constructor called with title = " << title << ",  width = " << width << ", height = " << height << " and VSync = " << vsync << std::endl;
@@ -94,8 +92,6 @@ namespace MyApp
             glfwSwapInterval(1); // Enable vsync
         }
     }
-
-
 
     UseImGui::UseImGui(const char* title, int width, int height, bool vsync) :
         UseGLFW(title,  width,  height,  vsync)
@@ -223,7 +219,10 @@ namespace MyApp
         IM_ASSERT(f_noto != nullptr);
     }
 
-
+    UseImGui* Init(const char* title, int width, int height, bool vsync)
+    {
+        return new UseImGui("Hazel Physics VR Engine", 1720, 720, true);
+    }
 
     void glfw_error_callback(int error, const char* description)
     {
