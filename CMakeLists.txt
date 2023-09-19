@@ -1,11 +1,13 @@
+########### BOILER PLATE #############
 # Set toplevel project & cmake version
 cmake_minimum_required(VERSION 3.16)
 project(MyApp LANGUAGES CXX)
 
 # Set C++ standartd
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED On)
-set(CMAKE_CXX_EXTENSIONS Off)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+########### BOILER PLATE #############
 
 # Add GLFW dependency as subproject
 set(GLFW_BUILD_DOCS OFF)    
@@ -26,8 +28,8 @@ set(SOURCES ${SOURCES}
 file(GLOB HEADERS include/*.hpp)
 
 # Build target & include locations
-add_executable(MyApp ${SOURCES} ${HEADERS})
-target_include_directories(MyApp PRIVATE
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCES} ${HEADERS})
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     include
     vendor/glfw/include
     vendor/imgui
@@ -35,4 +37,7 @@ target_include_directories(MyApp PRIVATE
 
 # Build target link dependencies
 find_package(OpenGL REQUIRED)
-target_link_libraries(MyApp ${OPENGL_LIBRARIES} glfw imgui)
+target_link_libraries(${CMAKE_PROJECT_NAME}
+    ${OPENGL_LIBRARIES}
+    glfw
+    imgui)

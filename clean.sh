@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-rm -rfv build
+BUILD_DIR=_build_linux
+
+rm -rfv ${BUILD_DIR}
 rm MyApp

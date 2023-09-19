@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 
-cmake -S . -B build
-cd build
-make -j
-cd ..
-ln -svf build/MyApp .
+COMPILER=clang++
+CXXFLAGS='-Wall -Wextra -g -Ofast'
+BUILD_DIR=_build_linux
 
+cmake \
+    -DCMAKE_CXX_COMPILER=${COMPILER} \
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+    -S . -B ${BUILD_DIR}
+
+(cd ${BUILD_DIR} && make -j)
+
+ln -svf ${BUILD_DIR}/MyApp .
