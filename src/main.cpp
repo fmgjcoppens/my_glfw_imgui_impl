@@ -21,5 +21,8 @@ int main()
 
     delete myapp;
 
+    // MyApp::User fcoppens("Francois Coppens");
+    // fcoppens.setSalary(48000);
+
     return 0;
 }

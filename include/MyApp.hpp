@@ -1,11 +1,5 @@
-#pragma once
-
-#include <iostream>
-#include <GLFW/glfw3.h>
-
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
-#include <imgui.h>
+#include "GLFW/glfw3.h"
+#include "imgui.h"
 
 #include <chrono>
 
@@ -73,4 +67,5 @@ namespace MyApp
     UseImGui* Init(const char* title, int width, int height, bool vsync);
     void glfw_error_callback(int error, const char* description);
     void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-}
+
+} // namespace MyA

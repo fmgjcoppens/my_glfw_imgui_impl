@@ -1,31 +1,29 @@
 #include "MyApp.hpp"
 
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
+#include <iostream>
+
 namespace MyApp
 {
+    Timer::Timer() { m_StartTimepoint = std::chrono::high_resolution_clock::now(); }
 
-    Timer::Timer()
-    {
-        m_StartTimepoint = std::chrono::high_resolution_clock::now();
-    }
-    
-    Timer::~Timer()
-    {
-        Stop();
-    }
+    Timer::~Timer() { Stop(); }
 
     void Timer::Stop()
     {
         m_EndTimepoint = std::chrono::high_resolution_clock::now();
         auto start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch().count();
-        auto end   = std::chrono::time_point_cast<std::chrono::microseconds>(m_EndTimepoint).time_since_epoch().count();
-        auto duration  = end - start;
+        auto end = std::chrono::time_point_cast<std::chrono::microseconds>(m_EndTimepoint).time_since_epoch().count();
+        auto duration = end - start;
         double miliseconds = duration * 0.001;
         std::cout << "Game loop duration: " << duration << " μs (" << miliseconds << " ms)\n";
     }
 
     UseGLFW::UseGLFW(const char* title, int width, int height, bool vsync)
     {
-        std::cerr << "UseGLFW constructor called with title = " << title << ",  width = " << width << ", height = " << height << " and VSync = " << vsync << std::endl;
+        std::cerr << "UseGLFW constructor called with title = " << title << ",  width = " << width << ", height = " << height
+                  << " and VSync = " << vsync << std::endl;
         m_title = title;
         m_width = width;
         m_height = height;
@@ -40,46 +38,30 @@ namespace MyApp
         glfwTerminate();
     }
 
-    bool UseGLFW::ShouldClose()
-    {
-        return glfwWindowShouldClose(m_window);
-    }
+    bool UseGLFW::ShouldClose() { return glfwWindowShouldClose(m_window); }
 
-    void UseGLFW::CloseLoop()
-    {
-        glfwSetWindowShouldClose(m_window, GL_TRUE);
-    }
+    void UseGLFW::CloseLoop() { glfwSetWindowShouldClose(m_window, GL_TRUE); }
 
-    void UseGLFW::GetFBSize(int* width, int* height)
-    {
-        glfwGetFramebufferSize(m_window, width, height);
-    }
+    void UseGLFW::GetFBSize(int* width, int* height) { glfwGetFramebufferSize(m_window, width, height); }
 
-    GLFWwindow* UseGLFW::GetWindow()
-    {
-        return m_window;
-    }
+    GLFWwindow* UseGLFW::GetWindow() { return m_window; }
 
-    void UseGLFW::BeginLoop()
-    {
-        glfwPollEvents();
-    }
+    void UseGLFW::BeginLoop() { glfwPollEvents(); }
 
-    void UseGLFW::EndLoop()
-    {
-        glfwSwapBuffers(m_window);
-    }
+    void UseGLFW::EndLoop() { glfwSwapBuffers(m_window); }
 
     void UseGLFW::Init()
     {
-        if (!glfwInit()) throw std::runtime_error("GLFW failed to initialize.");
+        if (!glfwInit())
+            throw std::runtime_error("GLFW failed to initialize.");
 
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
         m_window = glfwCreateWindow(m_width, m_height, m_title, nullptr, nullptr);
-        if (m_window == nullptr) throw std::runtime_error("GLFW window failed to initialize.");
+        if (m_window == nullptr)
+            throw std::runtime_error("GLFW window failed to initialize.");
 
         glfwMakeContextCurrent(m_window);
 
@@ -93,8 +75,8 @@ namespace MyApp
         }
     }
 
-    UseImGui::UseImGui(const char* title, int width, int height, bool vsync) :
-        UseGLFW(title,  width,  height,  vsync)
+    UseImGui::UseImGui(const char* title, int width, int height, bool vsync)
+        : UseGLFW(title, width, height, vsync)
     {
         std::cerr << "UseImGui constructor called" << std::endl;
         Init();
@@ -171,7 +153,8 @@ namespace MyApp
 
         // A small window just to quit the application
         ImGui::Begin("Exit application");
-        if (ImGui::Button("Quit")) CloseLoop();
+        if (ImGui::Button("Quit"))
+            CloseLoop();
         ImGui::End();
 
         // A viewport window
@@ -196,13 +179,13 @@ namespace MyApp
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         ImGuiIO& io = ImGui::GetIO();
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
             GLFWwindow* backup_current_context = glfwGetCurrentContext();
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
             glfwMakeContextCurrent(backup_current_context);
         }
-
     }
 
     void UseImGui::Init()
@@ -210,11 +193,12 @@ namespace MyApp
         // // Setup Dear ImGui context
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
-        ImGuiIO& io = ImGui::GetIO(); (void)io;
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-        io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // This does not behave properly in i3wm!
+        ImGuiIO& io = ImGui::GetIO();
+        (void)io;
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
+        io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // This does not behave properly in i3wm!
 
         // Setup Platform/Renderer backends
         ImGui_ImplGlfw_InitForOpenGL(GetWindow(), true);
@@ -224,7 +208,8 @@ namespace MyApp
         ImGui::StyleColorsDark();
 
         // Load Fonts
-        ImFont* f_noto = io.Fonts->AddFontFromFileTTF("/usr/share/fonts/noto/NotoSans-Regular.ttf", 22.0f);
+        // ImFont* f_noto = io.Fonts->AddFontFromFileTTF("/usr/share/fonts/noto/NotoSans-Regular.ttf", 22.0f);
+        ImFont* f_noto = io.Fonts->AddFontFromFileTTF("/home/fcoppens/.local/share/fonts/ttf/fantastique_nf/FantasqueSansMNerdFont-Regular.ttf", 22.0f);
         // ImFont* f_noto = io.Fonts->AddFontFromFileTTF("/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf", 20.0f);
         IM_ASSERT(f_noto != nullptr);
     }
@@ -234,14 +219,12 @@ namespace MyApp
         return new UseImGui("Hazel Physics VR Engine", 1720, 720, true);
     }
 
-    void glfw_error_callback(int error, const char* description)
-    {
-        fprintf(stderr, "GLFW Error %d: %s\n", error, description);
-    }
+    void glfw_error_callback(int error, const char* description) { fprintf(stderr, "GLFW Error %d: %s\n", error, description); }
 
     void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
     {
         if ((key == GLFW_KEY_Q || key == GLFW_KEY_ESCAPE) && action == GLFW_PRESS)
             glfwSetWindowShouldClose(window, GL_TRUE);
     }
-}
+
+} // namespace MyApp
